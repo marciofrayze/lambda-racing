@@ -39,15 +39,13 @@ initialState :: LambdaRacing
 initialState = Game
   (120.0, 100.0) PlayerStill
 
+mkCar :: Position -> Picture
+mkCar (x, y) = pictures
+  [ translate x y $ color orange $ rectangleSolid (2 * carWidth) (2 * carLength)
+  ]
+
 draw :: LambdaRacing -> Picture
 draw game = pictures [mkCar (player game)]
-  where
-
-    mkCar :: Position -> Picture
-    mkCar pos = pictures
-      [ translate x y $ color orange $ rectangleSolid (2 * carWidth) (2 * carLength)
-      ]
-      where (x, y) = pos
 
 movePlayer :: Position -> PlayerMovement -> Position
 movePlayer (px, py) PlayerLeft = (px - playerSpeed, py)
@@ -57,7 +55,6 @@ movePlayer (px, py) PlayerRight = (px + playerSpeed, py)
 movePlayers :: LambdaRacing -> LambdaRacing
 movePlayers game = game {  player = movePlayer (player game) (playerMovement game)
                         }
-
 handleKeys :: Event -> LambdaRacing -> LambdaRacing
 handleKeys (EventKey (SpecialKey KeyLeft) Down _ _) game = game { playerMovement = PlayerLeft }
 --handleKeys (EventKey (SpecialKey KeyLeft) Up _ _) game = game { playerMovement = PlayerStill }
